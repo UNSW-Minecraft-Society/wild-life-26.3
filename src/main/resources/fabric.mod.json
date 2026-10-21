@@ -3,13 +3,13 @@
 	"id": "wild-life",
 	"version": "${version}",
 	"name": "Wild Life",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Wild life plugin series inspired by Grians series",
 	"authors": [
-		"Me!"
+		"TitanPlayz"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://unsw.minecraft.com/",
+		"sources": "https://github.com/UNSW-Minecraft-Society/wild-life-26.3"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/wild-life/icon.png",
