@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "wild-life",
+	"version": "${version}",
+	"name": "Wild Life",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/wild-life/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "mcsoc.wildlife.WildLife",
+				"adapter": "kotlin"
+			}
+		],
+		"client": [
+			{
+				"value": "mcsoc.wildlife.client.WildLifeClient",
+				"adapter": "kotlin"
+			}
+		],
+		"fabric-datagen": [
+			{
+				"value": "mcsoc.wildlife.client.WildLifeDataGenerator",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"wild-life.mixins.json",
+		{
+			"config": "wild-life.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*",
+		"fabric-language-kotlin": "*"
+	}
+}
