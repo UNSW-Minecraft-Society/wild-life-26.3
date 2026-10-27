@@ -3,10 +3,6 @@ package mcsoc.wildlife.utils
 import com.mojang.serialization.Codec
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
-import kotlin.time.Instant
-import kotlin.time.toDuration
 
 
 inline val Int.ticks: Duration 

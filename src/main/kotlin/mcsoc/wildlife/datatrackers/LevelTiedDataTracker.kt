@@ -5,6 +5,14 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import mcsoc.wildlife.WildLife
+import mcsoc.wildlife.datatrackers.gamedata.GameDataExposer
+import mcsoc.wildlife.datatrackers.gamedata.GameDataTracker
+import mcsoc.wildlife.datatrackers.gameevents.GameEventsExposer
+import mcsoc.wildlife.datatrackers.gameevents.GameEventsTracker
+import mcsoc.wildlife.datatrackers.playerdata.PlayerDataExposer
+import mcsoc.wildlife.datatrackers.playerdata.PlayerDataTracker
+import mcsoc.wildlife.datatrackers.timer.GameTimer
+import mcsoc.wildlife.datatrackers.timer.TickExposer
 import net.minecraft.resources.Identifier
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.datafix.DataFixTypes
@@ -79,10 +87,14 @@ sealed class LevelDataType<T : LevelTiedData>(val id: String, val default: () ->
     val codec: MapCodec<T> = codec ?: MapCodec.unit(default)
     
     // put another enum value for each tracked data type
-    // object PlayerData : LevelDataType<PlayerDataTracker>("players", ::PlayerDataTracker, PlayerDataTracker.CODEC)
-    // object EventsQueue : LevelDataType<GameEventsTracker>("events", ::GameEventsTracker, GameEventsTracker.CODEC)
+    object GameData : LevelDataType<GameDataTracker>("game", ::GameDataTracker, GameDataTracker.CODEC)
+    object GameClock : LevelDataType<GameTimer>("clock", ::GameTimer, GameTimer.CODEC)
+    object PlayerData : LevelDataType<PlayerDataTracker>("players", ::PlayerDataTracker, PlayerDataTracker.CODEC)
+    object EventsQueue : LevelDataType<GameEventsTracker>("events", ::GameEventsTracker, GameEventsTracker.CODEC)
 }
 
 // put other level-tied data getters here
-// val ServerLevel.playerData: PlayerDataExposer get() = this.levelTiedData.getDataOfType(LevelDataType.PlayerData)
-// val ServerLevel.eventsQueue: GameEventsExposer get() = this.levelTiedData.getDataOfType(LevelDataType.EventsQueue).also{it.level = this}
+val ServerLevel.gameData: GameDataExposer get() = this.levelTiedData.getDataOfType(LevelDataType.GameData)
+val ServerLevel.gameClock: TickExposer get() = this.levelTiedData.getDataOfType(LevelDataType.GameClock)
+val ServerLevel.playerData: PlayerDataExposer get() = this.levelTiedData.getDataOfType(LevelDataType.PlayerData)
+val ServerLevel.eventsQueue: GameEventsExposer get() = this.levelTiedData.getDataOfType(LevelDataType.EventsQueue).also{it.level = this}

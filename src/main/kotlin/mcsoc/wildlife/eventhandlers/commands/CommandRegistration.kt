@@ -1,10 +1,5 @@
 package mcsoc.wildlife.eventhandlers.commands
 
-import com.mojang.brigadier.arguments.BoolArgumentType
-import com.mojang.brigadier.arguments.DoubleArgumentType
-import com.mojang.brigadier.arguments.FloatArgumentType
-import com.mojang.brigadier.arguments.IntegerArgumentType
-import com.mojang.brigadier.arguments.StringArgumentType
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.UuidArgument
@@ -19,8 +14,8 @@ private val NODE_ARGUMENT_NODE get() = Commands.argument(NODE_ARGUMENT, UuidArgu
 fun registerCommands() {
     CommandRegistrationCallback.EVENT.register{dispatcher, buildContext, selection -> dispatcher.register(
     Commands.literal(ROOT_NODE)
-        .then(Commands.literal("test")
-            .executes(CommandActions::test)
+        .then(Commands.literal("example")
+            .executes(CommandActions::example)
         )
     )}
 }
