@@ -7,8 +7,8 @@ import net.minecraft.commands.arguments.UuidArgument
 
 const val ROOT_NODE = "wildlife"
  
-internal const val NODE_ARGUMENT = "node"
-private val NODE_ARGUMENT_NODE get() = Commands.argument(NODE_ARGUMENT, UuidArgument.uuid())
+internal const val EXAMPLE_ARGUMENT = "node"
+private val EXAMPLE_ARG_EXAMPLE get() = Commands.argument(EXAMPLE_ARGUMENT, UuidArgument.uuid())
 
 
 fun registerCommands() {

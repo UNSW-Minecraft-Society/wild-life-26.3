@@ -76,11 +76,9 @@ sealed class GameEvent(protected val triggerTime: Duration, private val id: Stri
     }
     
     class GameStartCounterEvent private constructor(triggerTime: Duration, count: Long) :
-            RecursiveGameEvent<GameStartCounterEvent>(triggerTime, id, count, INTERVAL) {
-        constructor(triggerTime: Duration, startTime: Duration, _d: Unit = Unit) : this(
-            triggerTime,
-            (startTime / INTERVAL).toLong()
-        )
+        RecursiveGameEvent<GameStartCounterEvent>(triggerTime, id, count, INTERVAL) {
+            
+        constructor(triggerTime: Duration, startTime: Duration, _d: Unit = Unit) : this(triggerTime, (startTime / INTERVAL).toLong())
         companion object : GameEventCompanion<GameStartCounterEvent> {
             val INTERVAL = 1.seconds
             

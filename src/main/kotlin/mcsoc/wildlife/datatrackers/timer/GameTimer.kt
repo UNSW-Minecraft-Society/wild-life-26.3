@@ -17,6 +17,7 @@ class GameTimer() : LevelTiedData(), TickHolder {
             Duration.CODEC.fieldOf("time").forGetter(GameTimer::time)
         ).apply(it, ::GameTimer)}
     }
+    
     private constructor(time: Duration) : this() {
         this.time = time
     }

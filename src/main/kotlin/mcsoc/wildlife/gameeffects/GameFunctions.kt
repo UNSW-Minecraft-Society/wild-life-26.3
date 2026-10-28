@@ -17,15 +17,15 @@ fun ServerLevel.startCountdown(mapId: String): Int {
 
     this.getActivePlayers().forEach { it.onStartCount() }
 
-    this.eventsQueue.queueGameStartCounter(5.seconds)
     this.gameData.startCountdown()
+    this.eventsQueue.queueGameStartCounter(5.seconds)
     return 0
 }
 
 
 fun ServerLevel.startGame() {
     for (player in playerData.activePlayers) {
-        val playerData = playerData.getOrInitPlayerData(player).also { it.resetData() }
+        val playerData = playerData.getPlayerData(player).also { it.resetData() }
     }
 
     this.getActivePlayers().forEach { it.onStartGame() }
@@ -43,11 +43,7 @@ fun ServerLevel.end() {
     this.getActivePlayers().forEach { it.onFinish() }
     
     // clear data
-    for (playerData in this.playerData.activePlayerData) {
-        playerData.resetData()
-    }
-
-    this.playerData.activePlayers.clear()
+    this.playerData.resetData()
     this.gameData.end()
 }
 
@@ -59,7 +55,7 @@ private fun ServerPlayer.onStartCount() {
 }
 
 private fun ServerPlayer.onStartGame() {
-    this.setGameMode(GameType.ADVENTURE)
+    this.setGameMode(GameType.SURVIVAL)
 }
 
 private fun ServerPlayer.tickPlayer() {
