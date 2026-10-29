@@ -13,10 +13,14 @@ class PlayerData(val playerName: String) {
         val CODEC: Codec<PlayerData> = RecordCodecBuilder.create{it.group(
             Codec.STRING.fieldOf("playerName").forGetter(PlayerData::playerName),
             Codec.INT.fieldOf("points").forGetter(PlayerData::points),
+            Codec.INT.fieldOf("multiplier").forGetter(PlayerData::multiplier),
+            LifeState.CODEC.fieldOf("lifestate").forGetter(PlayerData::lifestate),
         ).apply(it, ::PlayerData)}
     }
     
     var points = 0
+    var multiplier = 1
+    var lifestate: LifeState = LifeState.GREEN
     // timer data probably not needed but just incase
     // val timer = object : TimeHolder {
     //     override var time: Duration = Duration.ZERO
@@ -24,19 +28,37 @@ class PlayerData(val playerName: String) {
     //     override fun reset() { time = Duration.ZERO }
     // }
     
-    private constructor(playerName: String, points: Int) : this(playerName) {
+    private constructor(playerName: String, points: Int, multiplier: Int, lifestate: LifeState) : this(playerName) {
         this.points = points
+        this.multiplier = multiplier
+        this.lifestate = lifestate
+    }
+    
+    fun onDeath() {
+        lifestate = lifestate.next ?: lifestate
+    }
+    
+    fun restoreLife() {
+        lifestate = lifestate.prev ?: lifestate
     }
         
     fun resetData() {
         // timer.reset()
         points = 0
+        multiplier = 1
+        lifestate = LifeState.GREEN
+    }
+    
+    fun setMultiplier(mult: Int) {
+        multiplier = mult
     }
     
     override fun toString(): String = 
         "Player Info:\n" +
         // "  time: ${timer.time}\n"
-        "  points: ${points}\n"
+        "  points: ${points}\n" +
+        "  multiplier: ${multiplier}\n" +
+        "  lifestate: ${lifestate}\n"
 }
 
 
