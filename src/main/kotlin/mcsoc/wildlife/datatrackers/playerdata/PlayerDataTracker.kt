@@ -17,7 +17,7 @@ class PlayerDataTracker() : LevelTiedData(), PlayerDataHolder {
                 .optionalFieldOf("player_data", mapOf())
                 .forGetter(PlayerDataTracker::player_data),
             UUIDUtil.CODEC.listOf()
-                .fieldOf("activePlayers")
+                .fieldOf("active_players")
                 .forGetter(PlayerDataTracker::activePlayersList)
         ).apply(it, ::PlayerDataTracker)}
     }

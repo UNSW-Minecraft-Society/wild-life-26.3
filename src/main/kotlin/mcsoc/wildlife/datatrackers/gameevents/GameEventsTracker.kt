@@ -12,7 +12,7 @@ class GameEventsTracker() : LevelTiedData(), GameEventsHolder {
     override fun getType() = LevelDataType.EventsQueue
     companion object {
         val CODEC: MapCodec<GameEventsTracker> = RecordCodecBuilder.mapCodec{it.group(
-            GameEvent.CODEC.listOf().fieldOf("queuedEvents").forGetter(GameEventsTracker::listQueuedEvents)
+            GameEvent.CODEC.listOf().fieldOf("queued_events").forGetter(GameEventsTracker::listQueuedEvents)
         ).apply(it, ::GameEventsTracker)}
     }
     

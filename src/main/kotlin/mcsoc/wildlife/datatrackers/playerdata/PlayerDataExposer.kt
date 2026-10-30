@@ -11,7 +11,7 @@ import java.util.*
 class PlayerData(val playerName: String) {
     companion object {
         val CODEC: Codec<PlayerData> = RecordCodecBuilder.create{it.group(
-            Codec.STRING.fieldOf("playerName").forGetter(PlayerData::playerName),
+            Codec.STRING.fieldOf("player_name").forGetter(PlayerData::playerName),
             Codec.INT.fieldOf("points").forGetter(PlayerData::points),
             Codec.INT.fieldOf("multiplier").forGetter(PlayerData::multiplier),
             LifeState.CODEC.fieldOf("lifestate").forGetter(PlayerData::lifestate),
@@ -47,10 +47,6 @@ class PlayerData(val playerName: String) {
         points = 0
         multiplier = 1
         lifestate = LifeState.GREEN
-    }
-    
-    fun setMultiplier(mult: Int) {
-        multiplier = mult
     }
     
     override fun toString(): String = 

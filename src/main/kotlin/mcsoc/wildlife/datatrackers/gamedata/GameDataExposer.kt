@@ -23,7 +23,6 @@ interface GameDataExposer {
     fun startGame()
     fun end()
     
-    fun setPointMultiplier(multiplier: Int)
     fun resetPointMultiplier()
 }
 
@@ -31,24 +30,16 @@ internal interface GameDataHolder : GameDataExposer {
     override var phase: GamePhase
     override var pointMultiplier: Int
     
-    private fun setGamePhase(phase: GamePhase) {
-        this.phase = phase
-    }
-
     override fun startCountdown() {
-        setGamePhase(GamePhase.Countdown)
+        phase = GamePhase.Countdown
     }
     
     override fun startGame() {
-        setGamePhase(GamePhase.Active)
+        phase = GamePhase.Active
     }
     
     override fun end() {
-        setGamePhase(GamePhase.Inactive)
-    }
-
-    override fun setPointMultiplier(multiplier: Int) {
-        pointMultiplier = multiplier
+        phase = GamePhase.Inactive
     }
 
     override fun resetPointMultiplier() {
