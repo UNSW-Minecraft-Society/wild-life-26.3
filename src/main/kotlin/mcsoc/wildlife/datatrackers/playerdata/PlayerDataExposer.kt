@@ -49,6 +49,10 @@ class PlayerData(val playerName: String) {
         lifestate = LifeState.GREEN
     }
     
+    fun resetRoundData() {
+        multiplier = 1
+    }
+    
     override fun toString(): String = 
         "Player Info:\n" +
         // "  time: ${timer.time}\n"
@@ -62,6 +66,7 @@ interface PlayerDataExposer {
     val player_data: Map<UUID, PlayerData>
     
     fun resetData()
+    fun newRound()
     fun getPlayerData(player: UUID, playerName: String = "Err"): PlayerData
     fun getPlayerData(player: Player) = getPlayerData(player.uuid, player.displayName.string)
     
@@ -79,5 +84,9 @@ internal interface PlayerDataHolder : PlayerDataExposer {
     override fun resetData() {
         activePlayerData.forEach(PlayerData::resetData)
         activePlayers.clear()
+    }
+
+    override fun newRound() {
+        activePlayerData.forEach { it.resetRoundData() }
     }
 }
