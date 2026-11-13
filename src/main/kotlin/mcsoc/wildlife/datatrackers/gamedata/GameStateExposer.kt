@@ -15,7 +15,7 @@ enum class GamePhase(val isRunning: Boolean, val isActive: Boolean) : StringRepr
 }
 
 
-interface GameDataExposer {
+interface GameStateExposer {
     val phase: GamePhase
     val pointMultiplier: Int
     
@@ -26,7 +26,7 @@ interface GameDataExposer {
     fun resetPointMultiplier()
 }
 
-internal interface GameDataHolder : GameDataExposer {
+internal interface GameDataHolder : GameStateExposer {
     override var phase: GamePhase
     override var pointMultiplier: Int
     

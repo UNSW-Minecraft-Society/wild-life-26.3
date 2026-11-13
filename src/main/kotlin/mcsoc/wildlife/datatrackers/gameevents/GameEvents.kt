@@ -3,7 +3,7 @@ package mcsoc.wildlife.datatrackers.gameevents
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import mcsoc.wildlife.datatrackers.eventsQueue
+import mcsoc.wildlife.datatrackers.eventScheduler
 import mcsoc.wildlife.datatrackers.playerData
 import mcsoc.wildlife.gameeffects.startGame
 import mcsoc.wildlife.utils.CODEC
@@ -68,7 +68,7 @@ sealed class GameEvent(protected val triggerTime: Duration, private val id: Stri
         override fun trigger(level: ServerLevel) {
             if (count > 0) {
                 recurseTrigger(level)
-                level.eventsQueue.queueEvent(createEvent(triggerTime + interval, count - 1))
+                level.eventScheduler.queueEvent(createEvent(triggerTime + interval, count - 1))
             } else {
                 concludeTrigger(level)
             }

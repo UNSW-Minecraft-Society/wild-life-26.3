@@ -7,13 +7,13 @@ import mcsoc.wildlife.datatrackers.LevelDataType
 import mcsoc.wildlife.datatrackers.LevelTiedData
 
 
-class GameDataTracker() : LevelTiedData(), GameDataHolder {
-    override fun getType() = LevelDataType.GameData
+class GameStateTracker() : LevelTiedData(), GameDataHolder {
+    override fun getType() = LevelDataType.GameState
     companion object {
-        val CODEC: MapCodec<GameDataTracker> = RecordCodecBuilder.mapCodec{it.group(
-            GamePhase.CODEC.fieldOf("game_phase").forGetter(GameDataTracker::phase),
-            Codec.INT.fieldOf("point_multiplier").forGetter(GameDataTracker::pointMultiplier)
-        ).apply(it, ::GameDataTracker)}
+        val CODEC: MapCodec<GameStateTracker> = RecordCodecBuilder.mapCodec{it.group(
+            GamePhase.CODEC.fieldOf("game_phase").forGetter(GameStateTracker::phase),
+            Codec.INT.fieldOf("point_multiplier").forGetter(GameStateTracker::pointMultiplier)
+        ).apply(it, ::GameStateTracker)}
     }
     private constructor(phase: GamePhase, multiplier: Int) : this() {
         this.phase = phase

@@ -11,7 +11,7 @@ import kotlin.time.TimeSource
 
 
 class GameTimer() : LevelTiedData(), TickHolder {
-    override fun getType(): LevelDataType<*> = LevelDataType.GameClock
+    override fun getType(): LevelDataType<*> = LevelDataType.GameTime
     companion object {
         val CODEC: MapCodec<GameTimer> = RecordCodecBuilder.mapCodec{it.group(
             Duration.CODEC.fieldOf("time").forGetter(GameTimer::time)
