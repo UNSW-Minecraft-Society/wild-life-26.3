@@ -10,6 +10,8 @@ import net.minecraft.util.datafix.DataFixTypes
 import net.minecraft.world.level.saveddata.SavedData
 import net.minecraft.world.level.saveddata.SavedDataType
 import mcsoc.wildlife.WildLife
+import mcsoc.wildlife.datatrackers.displays.BossBarDisplay
+import mcsoc.wildlife.datatrackers.displays.ScoreboardDisplay
 import mcsoc.wildlife.datatrackers.gamedata.GameStateExposer
 import mcsoc.wildlife.datatrackers.gamedata.GameStateTracker
 import mcsoc.wildlife.datatrackers.gameevents.GameEventsExposer
@@ -18,6 +20,8 @@ import mcsoc.wildlife.datatrackers.playerdata.PlayerDataExposer
 import mcsoc.wildlife.datatrackers.playerdata.PlayerDataTracker
 import mcsoc.wildlife.datatrackers.timer.GameTimer
 import mcsoc.wildlife.datatrackers.timer.TickExposer
+import mcsoc.wildlife.utils.clientdisplay.PlayerBossBarHandler
+import mcsoc.wildlife.utils.clientdisplay.scoreboard.PlayerScoreboardHandler
 
 
 // each tracker should extend this class
@@ -97,6 +101,8 @@ sealed class LevelDataType<T : LevelTiedData>(val id: String, val default: () ->
     object GameTime : LevelDataType<GameTimer>("clock", ::GameTimer, GameTimer.CODEC)
     object EventQueue : LevelDataType<GameEventsTracker>("events", ::GameEventsTracker, GameEventsTracker.CODEC)
     object PlayerData : LevelDataType<PlayerDataTracker>("players", ::PlayerDataTracker, PlayerDataTracker.CODEC)
+    object BossBar : LevelDataType<BossBarDisplay>("bossbar", ::BossBarDisplay)
+    object Scoreboard : LevelDataType<ScoreboardDisplay>("scoreboard", ::ScoreboardDisplay)
     object GameState : LevelDataType<GameStateTracker>("state", ::GameStateTracker, GameStateTracker.CODEC)
 }
 
@@ -105,4 +111,6 @@ sealed class LevelDataType<T : LevelTiedData>(val id: String, val default: () ->
 val ServerLevel.gameClock: TickExposer get() = this.levelTiedData.getDataOfType(LevelDataType.GameTime, this)
 val ServerLevel.eventScheduler: GameEventsExposer get() = this.levelTiedData.getDataOfType(LevelDataType.EventQueue, this)
 val ServerLevel.playerData: PlayerDataExposer get() = this.levelTiedData.getDataOfType(LevelDataType.PlayerData, this)
+val ServerLevel.bossBarDisplay: PlayerBossBarHandler get() = this.levelTiedData.getDataOfType(LevelDataType.BossBar, this)
+val ServerLevel.scoreboardDisplay: PlayerScoreboardHandler get() = this.levelTiedData.getDataOfType(LevelDataType.Scoreboard, this)
 val ServerLevel.gameState: GameStateExposer get() = this.levelTiedData.getDataOfType(LevelDataType.GameState, this)
