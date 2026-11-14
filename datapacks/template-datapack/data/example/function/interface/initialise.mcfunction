@@ -3,7 +3,8 @@
 
 # for testing use your terminate function, then run this, then start
 
-say Example wildcard has initialised
+tellraw @a {"text": "Example wildcard has initialised", "color": "gold"}
+
 scoreboard objectives add example dummy
 scoreboard players set started example 0
 
