@@ -24,5 +24,5 @@ sealed class LifeState(val id: Byte, val next: LifeState?, val prev: LifeState?,
     object GREEN : LifeState(0, LifeState.YELLOW, null, ChatFormatting.GREEN)
     object YELLOW : LifeState(1, LifeState.RED, LifeState.GREEN, ChatFormatting.YELLOW)
     object RED : LifeState(2, LifeState.ELIMINATED, LifeState.YELLOW, ChatFormatting.RED)
-    object ELIMINATED : LifeState(3, null, LifeState.RED, ChatFormatting.GRAY)
+    object ELIMINATED : LifeState(3, null, null, ChatFormatting.GRAY)
 }

@@ -1,8 +1,8 @@
 package mcsoc.wildlife.eventhandlers
 
-import mcsoc.wildlife.datatrackers.eventsQueue
+import mcsoc.wildlife.datatrackers.eventScheduler
 import mcsoc.wildlife.datatrackers.gameClock
-import mcsoc.wildlife.gameeffects.tickActivePlayers
+import mcsoc.wildlife.gameeffects.tickGame
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 
 
@@ -17,13 +17,13 @@ fun registerGameClockTick() {
 }
 
 fun registerGameEventsTick() {
-    ServerTickEvents.START_LEVEL_TICK.register{ it.eventsQueue.tick() }
+    ServerTickEvents.START_LEVEL_TICK.register{ it.eventScheduler.tick() }
 }
 
 fun registerPlayerTrackerTick() {
     ServerTickEvents.END_LEVEL_TICK.register{level ->
         for (i in 0u until level.gameClock.timerTick) {
-            level.tickActivePlayers()
+            level.tickGame()
         }
     }
 }

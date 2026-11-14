@@ -5,7 +5,7 @@ import kotlin.time.Duration
 
 // some value which holds some instant of time
 interface TimeHolder : Comparable<TimeHolder> {
-    val time: Duration
+    var time: Duration
     override fun compareTo(other: TimeHolder): Int = time.compareTo(other.time)
     
     fun tick()

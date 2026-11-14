@@ -1,7 +1,7 @@
 package mcsoc.wildlife.gameeffects
 
-import mcsoc.wildlife.datatrackers.eventsQueue
-import mcsoc.wildlife.datatrackers.gameData
+import mcsoc.wildlife.datatrackers.eventScheduler
+import mcsoc.wildlife.datatrackers.gameState
 import mcsoc.wildlife.datatrackers.playerData
 import mcsoc.wildlife.datatrackers.playerdata.getActivePlayers
 import net.minecraft.server.level.ServerLevel
@@ -11,14 +11,14 @@ import kotlin.time.Duration.Companion.seconds
 
 
 fun ServerLevel.startCountdown(mapId: String): Int {
-    if (this.gameData.phase.isRunning) {
+    if (this.gameState.phase.isRunning) {
         this.end()
     }
 
     this.getActivePlayers().forEach { it.onStartCount() }
 
-    this.gameData.startCountdown()
-    this.eventsQueue.queueGameStartCounter(5.seconds)
+    this.gameState.startCountdown()
+    this.eventScheduler.queueGameStartCounter(5.seconds)
     return 0
 }
 
@@ -30,12 +30,13 @@ fun ServerLevel.startGame() {
 
     this.getActivePlayers().forEach { it.onStartGame() }
 
-    this.gameData.startGame()
+    this.gameState.startGame()
 }
 
-fun ServerLevel.tickActivePlayers() {
-    if (this.gameData.phase.isActive) {
-        this.getActivePlayers().forEach { it.tick() }
+fun ServerLevel.tickGame() {
+    if (this.gameState.phase.isActive) {
+        this.getActivePlayers().forEach { it.tickPlayer() }
+        this.playerData.activePlayerData.forEach { it.tickTimer() }
     }
 }
 
@@ -44,7 +45,7 @@ fun ServerLevel.end() {
     
     // clear data
     this.playerData.resetData()
-    this.gameData.end()
+    this.gameState.end()
 }
 
 
