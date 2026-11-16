@@ -1,1 +1,0 @@
-schedule function rulesforfools:extra/trigger_cakeeater 3600s
