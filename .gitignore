@@ -28,9 +28,15 @@ bin/
 
 *.DS_Store
 
-# fabric
+# fabric server
 
-run/
+run/*
+!run/eula.txt
+!run/world/
+
+run/world/*
+!run/world/datapacks
+
 
 # java
 
