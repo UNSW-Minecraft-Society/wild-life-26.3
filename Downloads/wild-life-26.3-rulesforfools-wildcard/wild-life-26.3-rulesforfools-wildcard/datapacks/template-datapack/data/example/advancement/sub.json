@@ -1,0 +1,17 @@
+{
+	"parent": "example:root",
+	"requirements": [["stone_pickaxe"]], 
+	"criteria": {
+		"stone_pickaxe": {
+			"conditions": {
+				"items": [{"items": "minecraft:stone_pickaxe"}]
+			},
+			"trigger": "minecraft:inventory_changed"
+		}
+	},
+	"display": {
+		"description": "temp sub",
+		"icon": {"id": "minecraft:stone_pickaxe"},
+		"title": "temp sub"
+	}
+}
