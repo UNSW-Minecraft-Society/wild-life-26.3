@@ -3,7 +3,7 @@ package mcsoc.wildlife.datatrackers.playerdata
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import mcsoc.wildlife.datatrackers.playerData
-import mcsoc.wildlife.datatrackers.timer.TimeHolder
+import mcsoc.wildlife.datatrackers.timer.MutableTimeHolder
 import mcsoc.wildlife.utils.CODEC
 import mcsoc.wildlife.utils.ticks
 import net.minecraft.server.level.ServerLevel
@@ -29,7 +29,7 @@ class PlayerData(val playerName: String) {
     var points = 0
     var multiplier = 1
     var lifestate: LifeState = LifeState.GREEN
-    var timer = object : TimeHolder {
+    var timer = object : MutableTimeHolder {
         override var time: Duration = Duration.ZERO
         override fun tick() { time += 1.ticks }
         override fun reset() { time = Duration.ZERO }
