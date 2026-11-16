@@ -1,0 +1,7 @@
+{
+  "entity": "this",
+  "type": "minecraft:entity_scores",
+  "scores": {
+    "example": 1
+  }
+}

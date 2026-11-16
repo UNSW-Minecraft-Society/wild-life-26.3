@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      "minecraft:echo_shard"
+    ],
+    [
+      "minecraft:glow_berries"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:glow_berries",
+    "components": {
+      "minecraft:item_name": "Berries of Revealing",
+      "minecraft:consumable": {
+        "consume_seconds": 10000
+      },
+      "minecraft:enchantments": {
+        "example:items/berriesofrevealing": 1
+      },
+      "minecraft:piercing_weapon": {}
+    },
+    "count": 1
+  }
+}
