@@ -5,7 +5,6 @@ tellraw @a {"text": "Example wildcard has started", "color": "gold"}
 
 scoreboard players set started RulesForFools 1
 
-function rulesforfools:extra/showtitle
 function rulesforfools:extra/joining_graceperiod
 
 tag @a add rulesforfools_player
