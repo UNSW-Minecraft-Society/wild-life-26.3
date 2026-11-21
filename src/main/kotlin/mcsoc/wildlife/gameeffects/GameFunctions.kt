@@ -5,6 +5,7 @@ import mcsoc.wildlife.datatrackers.gameState
 import mcsoc.wildlife.datatrackers.gamedata.Wildcard
 import mcsoc.wildlife.datatrackers.playerData
 import mcsoc.wildlife.datatrackers.playerdata.getActivePlayers
+import mcsoc.wildlife.utils.runFunction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.player.Player
@@ -32,6 +33,7 @@ fun ServerLevel.startCountdown(cardId: String): Int {
 fun ServerLevel.startActiveCard() {
     this.getActivePlayers().forEach { it.onStartGame() }
     this.gameState.startGame()
+    runFunction("wildlife", "general/showtitle", this.server)
 }
 
 fun ServerLevel.endCurrentRound(): Int {    
