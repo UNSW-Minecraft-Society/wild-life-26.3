@@ -30,29 +30,28 @@ object CommandActions {
         //     return 0
         // }
         
-        ctx.source.level.startCountdown(datapack)
-        ctx.source.sendSystemMessage(Component.literal("Started game"))
-        
-        return 1
+        return ctx.source.level.startCountdown(datapack).let{
+            // TODO add more branches if
+            when (it) {
+                0 -> ctx.source.sendSuccess({Component.literal("Initiated $datapack.")}, true)
+                1 -> ctx.source.sendFailure(Component.literal("No wildcard with that name is defined!"))
+                else -> ctx.source.sendFailure(Component.literal("An error!"))
+            }
+            1 - it
+        }
     }
     
     fun endWildcard(ctx: CommandContext<CommandSourceStack>): Int {
-        val datapack = StringArgumentType.getString(ctx, DATAPACK_ARGUMENT)
-
-        // val out1 = runFunction(datapack, "interface/end", ctx.source)
-        // if (!out1) {
-        //     ctx.source.sendFailure(Component.literal("Function end doesn't exist"))
-        //     return 0
-        // }
         
-        // val out2 = runFunction(datapack, "interface/terminate", ctx.source)
-        // if (!out2) {
-        //     ctx.source.sendFailure(Component.literal("Function terminate doesn't exist"))
-        //     return 0
-        // }
-        ctx.source.level.endCurrentRound()
-        ctx.source.sendSystemMessage(Component.literal("Ended game"))
-        
-        return 1
+        // trusting that end and terminate are not malformed ig
+        return ctx.source.level.endCurrentRound().let{
+            when (it) {
+                0 -> ctx.source.sendSuccess({Component.literal("Ended game")}, true)
+                1 -> ctx.source.sendFailure(Component.literal("No game is currently running!"))
+                else -> {}
+            }
+            
+            1 - it
+        }
     }
 }

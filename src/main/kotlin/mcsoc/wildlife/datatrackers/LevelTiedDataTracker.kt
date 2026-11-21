@@ -63,7 +63,7 @@ private class LevelTiedDataTracker() : SavedData() {
             WildLife.id("saved_level_data"),
             ::LevelTiedDataTracker, CODEC, DataFixTypes.LEVEL
         )
-        fun getLevelData(level: ServerLevel): LevelTiedDataTracker = level.dataStorage.computeIfAbsent(TYPE)
+        fun getLevelData(level: ServerLevel): LevelTiedDataTracker = level.server.dataStorage.computeIfAbsent(TYPE)
     }
     override fun isDirty(): Boolean = tracked_data.values.any(LevelTiedData::isDirty)
     override fun setDirty(dirty: Boolean) {

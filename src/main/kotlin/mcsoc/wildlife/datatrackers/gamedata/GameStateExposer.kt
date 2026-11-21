@@ -9,20 +9,21 @@ import net.minecraft.util.StringRepresentable
 
 sealed class Wildcard(protected val namespace: String) : StringRepresentable {
     companion object {
-        val cardList = Wildcard::class.sealedSubclasses
+        val cardList = (Wildcard::class.sealedSubclasses + DatapackWildcard::class.sealedSubclasses)
             .mapNotNull { it.objectInstance }
             .toTypedArray()
-                
+            
         val CODEC: Codec<Wildcard> = StringRepresentable.fromValues{cardList}
         
         fun fromNamespace(name: String): Wildcard? {
             for (card in cardList) {
-                if (card.getSerializedName() == name) return card
+                if (card.serializedName == name) return card
             }
             return null
         }
     }
     
+    data object Example : DatapackWildcard("example")
     data object RulesForFools : DatapackWildcard("rulesforfools")
     data object FlowerPower : DatapackWildcard("flowerpower")
     

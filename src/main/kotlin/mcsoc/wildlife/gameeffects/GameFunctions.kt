@@ -7,6 +7,7 @@ import mcsoc.wildlife.datatrackers.playerData
 import mcsoc.wildlife.datatrackers.playerdata.getActivePlayers
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.GameType
 import kotlin.time.Duration.Companion.seconds
 
@@ -16,8 +17,12 @@ import kotlin.time.Duration.Companion.seconds
 fun ServerLevel.startCountdown(cardId: String): Int {
     if (level.gameState.phase.isRunning) endCurrentRound()
     val card = Wildcard.fromNamespace(cardId) ?: return 1
+
+    // TODO make this not evil pls 
+    this.playerData.activePlayers.addAll(this.server.playerList.players.map(Player::getUUID))
     
     this.getActivePlayers().forEach { it.onStartCount() }
+    this.playerData.newRound()
     this.gameState.startCountdown(card)
     this.eventScheduler.queueGameStartCounter(5.seconds)
     return 0
@@ -29,11 +34,14 @@ fun ServerLevel.startActiveCard() {
     this.gameState.startGame()
 }
 
-fun ServerLevel.endCurrentRound() {    
-
+fun ServerLevel.endCurrentRound(): Int {    
+    if (!this.gameState.phase.isRunning) return 1
+    
     this.gameState.endGame()
     this.getActivePlayers().forEach { it.onFinish() }
+    this.playerData.newRound()
     this.gameState.terminate()
+    return 0
 }
 
 fun ServerLevel.tickGame() {
