@@ -2,6 +2,7 @@ package mcsoc.wildlife.gameeffects
 
 import mcsoc.wildlife.datatrackers.eventScheduler
 import mcsoc.wildlife.datatrackers.gameState
+import mcsoc.wildlife.datatrackers.gamedata.Wildcard
 import mcsoc.wildlife.datatrackers.playerData
 import mcsoc.wildlife.datatrackers.playerdata.getActivePlayers
 import net.minecraft.server.level.ServerLevel
@@ -9,15 +10,15 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.GameType
 import kotlin.time.Duration.Companion.seconds
 
-
+/* 0 means success
+ * 1 means card not found
+ */
 fun ServerLevel.startCountdown(cardId: String): Int {
     if (level.gameState.phase.isRunning) endActiveCard()
+    val card = Wildcard.fromNamespace(cardId) ?: return 1
     
-    // call interface/initialise
-
     this.getActivePlayers().forEach { it.onStartCount() }
-
-    this.gameState.startCountdown(cardId)
+    this.gameState.startCountdown(card)
     this.eventScheduler.queueGameStartCounter(5.seconds)
     return 0
 }
@@ -26,17 +27,15 @@ fun ServerLevel.startCountdown(cardId: String): Int {
 fun ServerLevel.startActiveCard() {
     this.getActivePlayers().forEach { it.onStartGame() }
     
-    // call interface/start
-    
     this.gameState.startGame()
 }
 
 fun ServerLevel.endActiveCard() {
     // call interface/end
     
-    this.getActivePlayers().forEach { it.onFinish() }
 
     this.gameState.endGame()
+    this.getActivePlayers().forEach { it.onFinish() }
         
     // call interface/terminate
 
