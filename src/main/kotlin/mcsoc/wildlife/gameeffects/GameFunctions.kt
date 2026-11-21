@@ -23,14 +23,29 @@ fun ServerLevel.startCountdown(mapId: String): Int {
 }
 
 
-fun ServerLevel.startGame() {
+fun ServerLevel.startActiveCard() {
+    if (level.gameState.phase.isRunning) endActiveCard()
+    
+    // call interface/initialise
+    
+    this.getActivePlayers().forEach { it.onStartGame() }
+    
+    // call interface/start
+    
+    this.gameState.startGame()
+}
+
+fun ServerLevel.endActiveCard() {
     for (player in playerData.activePlayers) {
         val playerData = playerData.getPlayerData(player).also { it.resetData() }
     }
+    
+    // call interface/end
 
-    this.getActivePlayers().forEach { it.onStartGame() }
+    this.gameState.endGame()
+        
+    // call interface/terminate
 
-    this.gameState.startGame()
 }
 
 fun ServerLevel.tickGame() {
@@ -45,7 +60,7 @@ fun ServerLevel.end() {
     
     // clear data
     this.playerData.resetData()
-    this.gameState.end()
+    this.gameState.endGame()
 }
 
 

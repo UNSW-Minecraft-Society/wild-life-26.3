@@ -21,7 +21,7 @@ interface GameStateExposer {
     
     fun startCountdown()
     fun startGame()
-    fun end()
+    fun endGame()
     
     fun resetPointMultiplier()
 }
@@ -38,7 +38,7 @@ internal interface GameDataHolder : GameStateExposer {
         phase = GamePhase.Active
     }
     
-    override fun end() {
+    override fun endGame() {
         phase = GamePhase.Inactive
     }
 
