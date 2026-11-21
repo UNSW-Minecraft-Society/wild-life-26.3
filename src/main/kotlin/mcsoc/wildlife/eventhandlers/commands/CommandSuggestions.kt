@@ -13,3 +13,13 @@ internal class ExampleSuggestionProvider: SuggestionProvider<CommandSourceStack>
 		return builder.buildFuture()
 	}
 }
+
+internal class DatapackSuggestionProvider: SuggestionProvider<CommandSourceStack> {
+	override fun getSuggestions(ctx: CommandContext<CommandSourceStack>, builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
+		ctx.source.server.functions.functionNames
+			.filter {it.path == "interface/initialise" }
+			.map {it.namespace}.distinct()
+			.forEach { builder.suggest(it) }
+		return builder.buildFuture()
+	}
+}
