@@ -11,9 +11,9 @@ import kotlin.time.Duration.Companion.seconds
 
 
 fun ServerLevel.startCountdown(mapId: String): Int {
-    if (this.gameState.phase.isRunning) {
-        this.end()
-    }
+    if (level.gameState.phase.isRunning) endActiveCard()
+    
+    // call interface/initialise
 
     this.getActivePlayers().forEach { it.onStartCount() }
 
@@ -24,10 +24,6 @@ fun ServerLevel.startCountdown(mapId: String): Int {
 
 
 fun ServerLevel.startActiveCard() {
-    if (level.gameState.phase.isRunning) endActiveCard()
-    
-    // call interface/initialise
-    
     this.getActivePlayers().forEach { it.onStartGame() }
     
     // call interface/start
@@ -36,11 +32,9 @@ fun ServerLevel.startActiveCard() {
 }
 
 fun ServerLevel.endActiveCard() {
-    for (player in playerData.activePlayers) {
-        val playerData = playerData.getPlayerData(player).also { it.resetData() }
-    }
-    
     // call interface/end
+    
+    this.getActivePlayers().forEach { it.onFinish() }
 
     this.gameState.endGame()
         
@@ -55,19 +49,11 @@ fun ServerLevel.tickGame() {
     }
 }
 
-fun ServerLevel.end() {
-    this.getActivePlayers().forEach { it.onFinish() }
-    
-    // clear data
-    this.playerData.resetData()
-    this.gameState.endGame()
-}
-
 
 // Player specific game functions
 
 private fun ServerPlayer.onStartCount() {
-    this.setGameMode(GameType.SPECTATOR)
+    // this.setGameMode(GameType.SPECTATOR)
 }
 
 private fun ServerPlayer.onStartGame() {
