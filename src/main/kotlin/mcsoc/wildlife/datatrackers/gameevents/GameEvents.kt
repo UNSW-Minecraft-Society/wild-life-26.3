@@ -5,8 +5,12 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import mcsoc.wildlife.datatrackers.eventScheduler
 import mcsoc.wildlife.datatrackers.playerData
+import mcsoc.wildlife.gameeffects.endActiveCard
+import mcsoc.wildlife.gameeffects.startActiveCard
 import mcsoc.wildlife.utils.CODEC
+import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.sounds.SoundEvents
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.time.Duration
@@ -89,18 +93,30 @@ sealed class GameEvent(protected val triggerTime: Duration, private val id: Stri
         }
         
         override fun recurseTrigger(level: ServerLevel) {
-            // loop through active players then
-            level.playerData.activePlayers
-            // player.sendTitle(Component.literal(count.toString()))
-            // player.sendSound(SoundEvents.NOTE_BLOCK_PLING.value())
-            
+            for (player in level.playerData.activePlayers) {
+                // player.sendTitle(Component.literal(count.toString()))
+                // player.sendSound(SoundEvents.NOTE_BLOCK_PLING.value())
+            }
         }
         override fun concludeTrigger(level: ServerLevel) {
-            // loop through active players then
-            // player.sendTitle(Component.literal("GO!"))
-            // player.sendSound(SoundEvents.NOTE_BLOCK_PLING.value())
-            // level.startGame()
+            level.startActiveCard()
         }
         override fun createEvent(triggerTime: Duration, count: Long) = GameStartCounterEvent(triggerTime, count)
+    }
+    
+    
+    class WildcardEndEvent private constructor(triggerTime: Duration) : 
+        GameEvent(triggerTime, id) {
+                
+        companion object : GameEventCompanion<WildcardEndEvent> {            
+            override val id: String = "wildcardStart"
+            override val codec: MapCodec<WildcardEndEvent> = RecordCodecBuilder.mapCodec{it.group(
+                Duration.CODEC.fieldOf("time").forGetter(WildcardEndEvent::triggerTime),
+            ).apply(it, ::WildcardEndEvent)}
+        }
+        
+        override fun trigger(level: ServerLevel) {
+            level.endActiveCard()
+        }
     }
 }
