@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import mcsoc.wildlife.datatrackers.eventScheduler
 import mcsoc.wildlife.datatrackers.playerData
-import mcsoc.wildlife.gameeffects.endActiveCard
+import mcsoc.wildlife.gameeffects.endCurrentRound
 import mcsoc.wildlife.gameeffects.startActiveCard
 import mcsoc.wildlife.utils.CODEC
 import mcsoc.wildlife.utils.sendSound
@@ -120,7 +120,7 @@ sealed class GameEvent(protected val triggerTime: Duration, private val id: Stri
         }
         
         override fun trigger(level: ServerLevel) {
-            level.endActiveCard()
+            level.endCurrentRound()
         }
     }
 }
