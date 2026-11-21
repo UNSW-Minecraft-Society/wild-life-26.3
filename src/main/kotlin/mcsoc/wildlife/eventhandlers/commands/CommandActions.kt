@@ -3,6 +3,7 @@ package mcsoc.wildlife.eventhandlers.commands
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import mcsoc.wildlife.WildLife
+import mcsoc.wildlife.utils.runFunction
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
@@ -54,17 +55,4 @@ object CommandActions {
         
         return 1
     }
-}
-
-private fun runFunction(namespace: String, path: String, source: CommandSourceStack): Boolean {
-    val id = Identifier.tryBuild(namespace, path)
-    val function = id?.let {
-        source.server.functions.get(it).orElse(null)
-    }
-    if (function == null) {
-        return false
-    }
-    
-    source.server.functions.execute(function, source)
-    return true
 }
