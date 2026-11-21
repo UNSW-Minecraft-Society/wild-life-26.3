@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import mcsoc.wildlife.datatrackers.eventScheduler
 import mcsoc.wildlife.datatrackers.playerData
-import mcsoc.wildlife.gameeffects.startGame
 import mcsoc.wildlife.utils.CODEC
 import net.minecraft.server.level.ServerLevel
 import kotlin.reflect.KClass
@@ -100,7 +99,7 @@ sealed class GameEvent(protected val triggerTime: Duration, private val id: Stri
             // loop through active players then
             // player.sendTitle(Component.literal("GO!"))
             // player.sendSound(SoundEvents.NOTE_BLOCK_PLING.value())
-            level.startGame()
+            // level.startGame()
         }
         override fun createEvent(triggerTime: Duration, count: Long) = GameStartCounterEvent(triggerTime, count)
     }

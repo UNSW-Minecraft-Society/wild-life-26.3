@@ -10,27 +10,36 @@ import net.minecraft.world.level.GameType
 import kotlin.time.Duration.Companion.seconds
 
 
-fun ServerLevel.startCountdown(mapId: String): Int {
-    if (this.gameState.phase.isRunning) {
-        this.end()
-    }
+fun ServerLevel.startCountdown(cardId: String): Int {
+    if (level.gameState.phase.isRunning) endActiveCard()
+    
+    // call interface/initialise
 
     this.getActivePlayers().forEach { it.onStartCount() }
 
-    this.gameState.startCountdown()
+    this.gameState.startCountdown(cardId)
     this.eventScheduler.queueGameStartCounter(5.seconds)
     return 0
 }
 
 
-fun ServerLevel.startGame() {
-    for (player in playerData.activePlayers) {
-        val playerData = playerData.getPlayerData(player).also { it.resetData() }
-    }
-
+fun ServerLevel.startActiveCard() {
     this.getActivePlayers().forEach { it.onStartGame() }
-
+    
+    // call interface/start
+    
     this.gameState.startGame()
+}
+
+fun ServerLevel.endActiveCard() {
+    // call interface/end
+    
+    this.getActivePlayers().forEach { it.onFinish() }
+
+    this.gameState.endGame()
+        
+    // call interface/terminate
+
 }
 
 fun ServerLevel.tickGame() {
@@ -40,19 +49,11 @@ fun ServerLevel.tickGame() {
     }
 }
 
-fun ServerLevel.end() {
-    this.getActivePlayers().forEach { it.onFinish() }
-    
-    // clear data
-    this.playerData.resetData()
-    this.gameState.end()
-}
-
 
 // Player specific game functions
 
 private fun ServerPlayer.onStartCount() {
-    this.setGameMode(GameType.SPECTATOR)
+    // this.setGameMode(GameType.SPECTATOR)
 }
 
 private fun ServerPlayer.onStartGame() {
