@@ -32,6 +32,10 @@ bin/
 
 run/*
 !run/eula.txt
+!run/world/
+
+run/world/*
+!run/world/datapacks
 
 
 # java
