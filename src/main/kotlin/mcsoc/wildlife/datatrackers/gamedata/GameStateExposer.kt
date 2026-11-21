@@ -45,19 +45,19 @@ sealed class Wildcard(protected val namespace: String) : StringRepresentable {
     sealed class DatapackWildcard(namespace: String) : Wildcard(namespace) {
         override fun init(level: ServerLevel) {
             // run function namespace/initialise
-            runFunction(namespace, "initialise", level.server, level = level)
+            runFunction(namespace, "interface/initialise", level.server, level = level)
         }
         override fun start(level: ServerLevel) {
             // run function namespace/start
-            runFunction(namespace, "start", level.server, level = level)
+            runFunction(namespace, "interface/start", level.server, level = level)
         }
         override fun end(level: ServerLevel) {
             // run function namespace/end
-            runFunction(namespace, "end", level.server, level = level)
+            runFunction(namespace, "interface/end", level.server, level = level)
         }
         override fun terminate(level: ServerLevel) {
             // run function namespace/terminate
-            runFunction(namespace, "terminate", level.server, level = level)
+            runFunction(namespace, "interface/terminate", level.server, level = level)
         }
     }
     
@@ -107,6 +107,7 @@ internal interface GameDataHolder : GameStateExposer {
     override fun startCountdown(wildcard: Wildcard) {
         activeCard = wildcard
         phase = GamePhase.Countdown
+        activeCard?.init(tiedLevel)
     }
     
     override fun startGame() {
