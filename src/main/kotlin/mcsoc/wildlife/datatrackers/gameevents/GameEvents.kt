@@ -8,6 +8,8 @@ import mcsoc.wildlife.datatrackers.playerData
 import mcsoc.wildlife.gameeffects.endActiveCard
 import mcsoc.wildlife.gameeffects.startActiveCard
 import mcsoc.wildlife.utils.CODEC
+import mcsoc.wildlife.utils.sendSound
+import mcsoc.wildlife.utils.sendTitle
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
@@ -93,9 +95,11 @@ sealed class GameEvent(protected val triggerTime: Duration, private val id: Stri
         }
         
         override fun recurseTrigger(level: ServerLevel) {
-            for (player in level.playerData.activePlayers) {
-                // player.sendTitle(Component.literal(count.toString()))
-                // player.sendSound(SoundEvents.NOTE_BLOCK_PLING.value())
+            for (playerId in level.playerData.activePlayers) {
+                val player = level.server.playerList.getPlayer(playerId) ?: continue
+                
+                player.sendTitle(Component.literal(count.toString()))
+                player.sendSound(SoundEvents.NOTE_BLOCK_PLING.value())
             }
         }
         override fun concludeTrigger(level: ServerLevel) {
