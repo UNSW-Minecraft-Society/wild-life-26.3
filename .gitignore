@@ -35,7 +35,6 @@ run/*
 !run/world/
 
 run/world/*
-!run/world/datapacks
 
 
 # java

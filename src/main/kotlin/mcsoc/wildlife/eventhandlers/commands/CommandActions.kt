@@ -1,8 +1,12 @@
 package mcsoc.wildlife.eventhandlers.commands
 
+import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import mcsoc.wildlife.WildLife
 import net.minecraft.commands.CommandSourceStack
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
+import net.minecraft.server.MinecraftServer
 
 
 object CommandActions {
@@ -10,4 +14,57 @@ object CommandActions {
         WildLife.LOGGER.info("example command")
         return 1
     }
+    
+    fun startWildcard(ctx: CommandContext<CommandSourceStack>): Int {
+        val datapack = StringArgumentType.getString(ctx, DATAPACK_ARGUMENT)
+
+        val out1 = runFunction(datapack, "interface/initialise", ctx.source)
+        if (!out1) {
+            ctx.source.sendFailure(Component.literal("Function initialise doesn't exist"))
+            return 0
+        }
+        
+        val out2 = runFunction(datapack, "interface/start", ctx.source)
+        if (!out2) {
+            ctx.source.sendFailure(Component.literal("Function start doesn't exist"))
+            return 0
+        }
+        
+        ctx.source.sendSystemMessage(Component.literal("Started game"))
+        
+        return 1
+    }
+    
+    fun endWildcard(ctx: CommandContext<CommandSourceStack>): Int {
+        val datapack = StringArgumentType.getString(ctx, DATAPACK_ARGUMENT)
+
+        val out1 = runFunction(datapack, "interface/end", ctx.source)
+        if (!out1) {
+            ctx.source.sendFailure(Component.literal("Function end doesn't exist"))
+            return 0
+        }
+        
+        val out2 = runFunction(datapack, "interface/terminate", ctx.source)
+        if (!out2) {
+            ctx.source.sendFailure(Component.literal("Function terminate doesn't exist"))
+            return 0
+        }
+        
+        ctx.source.sendSystemMessage(Component.literal("Ended game"))
+        
+        return 1
+    }
+}
+
+private fun runFunction(namespace: String, path: String, source: CommandSourceStack): Boolean {
+    val id = Identifier.tryBuild(namespace, path)
+    val function = id?.let {
+        source.server.functions.get(it).orElse(null)
+    }
+    if (function == null) {
+        return false
+    }
+    
+    source.server.functions.execute(function, source)
+    return true
 }

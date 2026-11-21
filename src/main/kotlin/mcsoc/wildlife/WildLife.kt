@@ -1,5 +1,6 @@
 package mcsoc.wildlife
 
+import mcsoc.wildlife.eventhandlers.registerEvents
 import net.fabricmc.api.ModInitializer
 import net.minecraft.resources.Identifier
 import org.slf4j.LoggerFactory
@@ -11,6 +12,8 @@ object WildLife : ModInitializer {
 	override fun onInitialize() {
 		// runs as soon as Minecraft is in a mod-load-ready state.
 		LOGGER.info("Hello Fabric world!")
+
+        registerEvents()
 	}
 
 	fun id(path: String): Identifier = Identifier.fromNamespaceAndPath(MOD_ID, path)
