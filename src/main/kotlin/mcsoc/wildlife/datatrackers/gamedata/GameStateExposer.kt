@@ -19,7 +19,9 @@ interface GameStateExposer {
     val phase: GamePhase
     val pointMultiplier: Int
     
-    fun startCountdown()
+    val activeCard: String?
+    
+    fun startCountdown(cardId: String)
     fun startGame()
     fun endGame()
     
@@ -29,8 +31,10 @@ interface GameStateExposer {
 internal interface GameDataHolder : GameStateExposer {
     override var phase: GamePhase
     override var pointMultiplier: Int
+    override var activeCard: String?
     
-    override fun startCountdown() {
+    override fun startCountdown(cardId: String) {
+        activeCard = cardId
         phase = GamePhase.Countdown
     }
     

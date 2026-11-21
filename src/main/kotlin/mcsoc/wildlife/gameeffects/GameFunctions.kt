@@ -10,14 +10,14 @@ import net.minecraft.world.level.GameType
 import kotlin.time.Duration.Companion.seconds
 
 
-fun ServerLevel.startCountdown(mapId: String): Int {
+fun ServerLevel.startCountdown(cardId: String): Int {
     if (level.gameState.phase.isRunning) endActiveCard()
     
     // call interface/initialise
 
     this.getActivePlayers().forEach { it.onStartCount() }
 
-    this.gameState.startCountdown()
+    this.gameState.startCountdown(cardId)
     this.eventScheduler.queueGameStartCounter(5.seconds)
     return 0
 }

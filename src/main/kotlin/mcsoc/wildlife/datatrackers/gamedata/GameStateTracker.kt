@@ -22,4 +22,6 @@ class GameStateTracker() : LevelTiedData(), GameDataHolder {
     
     override var phase: GamePhase = GamePhase.Inactive
     override var pointMultiplier = 1
+    override var activeCard: String? = null
+        get() = if (phase.isRunning) field else null
 }
