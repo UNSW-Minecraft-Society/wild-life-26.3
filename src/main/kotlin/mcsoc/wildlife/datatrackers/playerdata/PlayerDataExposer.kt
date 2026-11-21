@@ -26,9 +26,10 @@ class PlayerData(val playerName: String) {
         ).apply(it, ::PlayerData)}
     }
     
-    var points = 0
+    private var points = 0
+    var pointsThisRound = 0
     var multiplier = 1
-    var lifestate: LifeState = LifeState.GREEN
+    var lifestate: LifeState = LifeState.Green
     var timer = object : MutableTimeHolder {
         override var time: Duration = Duration.ZERO
         override fun tick() { time += 1.ticks }
@@ -54,12 +55,7 @@ class PlayerData(val playerName: String) {
         timer.reset()
         points = 0
         multiplier = 1
-        lifestate = LifeState.GREEN
-    }
-    
-    fun resetRoundData() {
-        timer.reset()
-        multiplier = 1
+        lifestate = LifeState.Green
     }
     
     // should be only ticked when active (from level.tickgame())
@@ -67,14 +63,35 @@ class PlayerData(val playerName: String) {
         timer.tick()
     }
     
-    fun isEligibleForPoints(): Boolean {
+    
+    fun scorePoints(amount: Int) {
+        pointsThisRound += amount * multiplier
+        if (pointsThisRound < 0) pointsThisRound = 0
+    }
+    
+    fun onRoundEnd() {
+        if (isEligibleForPoints()) {
+            points += pointsThisRound
+        }
+        resetRoundData()
+    }
+    
+    private fun isEligibleForPoints(): Boolean {
         return timer.time > POINT_TIME_REQUIREMENT
+    }
+    
+    private fun resetRoundData() {
+        timer.reset()
+        multiplier = 1
+        lifestate = LifeState.Green
+        pointsThisRound = 0
     }
     
     override fun toString(): String = 
         "Player Info:\n" +
         "  time: ${timer.time}\n" +
         "  points: ${points}\n" +
+        "  round points: ${pointsThisRound}\n" +
         "  multiplier: ${multiplier}\n" +
         "  lifestate: ${lifestate}\n"
 }
@@ -84,7 +101,7 @@ interface PlayerDataExposer {
     val player_data: Map<UUID, PlayerData>
     
     fun resetData()
-    fun newRound()
+    fun onRoundEnd()
     fun getPlayerData(player: UUID, playerName: String = "Err"): PlayerData
     fun getPlayerData(player: Player) = getPlayerData(player.uuid, player.displayName.string)
     
@@ -104,7 +121,7 @@ internal interface PlayerDataHolder : PlayerDataExposer {
         activePlayers.clear()
     }
 
-    override fun newRound() {
-        activePlayerData.forEach { it.resetRoundData() }
+    override fun onRoundEnd() {
+        activePlayerData.forEach { it.onRoundEnd() }
     }
 }

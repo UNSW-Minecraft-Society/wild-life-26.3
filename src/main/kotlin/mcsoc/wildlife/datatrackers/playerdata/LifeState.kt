@@ -8,11 +8,10 @@ sealed class LifeState(val id: Byte, val next: LifeState?, val prev: LifeState?,
     companion object {
         fun fromId(id: Byte): LifeState {
             return when (id.toInt()) {
-                0 -> GREEN
-                1 -> YELLOW
-                2 -> RED
-                3 -> ELIMINATED
-                else -> GREEN
+                0 -> Green
+                2 -> Red
+                3 -> Inactive
+                else -> Green
             }
         }
         
@@ -21,8 +20,7 @@ sealed class LifeState(val id: Byte, val next: LifeState?, val prev: LifeState?,
         ).apply(it, ::fromId)}
     }
     
-    object GREEN : LifeState(0, LifeState.YELLOW, null, ChatFormatting.GREEN)
-    object YELLOW : LifeState(1, LifeState.RED, LifeState.GREEN, ChatFormatting.YELLOW)
-    object RED : LifeState(2, LifeState.ELIMINATED, LifeState.YELLOW, ChatFormatting.RED)
-    object ELIMINATED : LifeState(3, null, null, ChatFormatting.GRAY)
+    object Green : LifeState(0, LifeState.Red, null, ChatFormatting.GREEN)
+    object Red : LifeState(2, LifeState.Inactive, LifeState.Green, ChatFormatting.RED)
+    object Inactive : LifeState(3, null, null, ChatFormatting.GRAY)
 }
