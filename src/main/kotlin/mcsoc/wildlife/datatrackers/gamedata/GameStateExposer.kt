@@ -1,7 +1,11 @@
 package mcsoc.wildlife.datatrackers.gamedata
 
 import com.mojang.serialization.Codec
+import mcsoc.wildlife.utils.runFunction
+import net.minecraft.server.MinecraftServer
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.StringRepresentable
+
 
 sealed class Wildcard(protected val namespace: String) : StringRepresentable {
     companion object {
@@ -23,40 +27,44 @@ sealed class Wildcard(protected val namespace: String) : StringRepresentable {
     data object FlowerPower : DatapackWildcard("flowerpower")
     
     data object ControlSwap : Wildcard("controlswap") {
-        override fun init() {
+        override fun init(level: ServerLevel) {
             // some initControlSwap()
         }
-        override fun start() {
+        override fun start(level: ServerLevel) {
             // some startControlSwap()
         }
-        override fun end() {
+        override fun end(level: ServerLevel) {
             // some endControlSwap()
         }
-        override fun terminate() {
+        override fun terminate(level: ServerLevel) {
             // some terminateControlSwap()
         }
     }
     
     
     sealed class DatapackWildcard(namespace: String) : Wildcard(namespace) {
-        override fun init() {
+        override fun init(level: ServerLevel) {
             // run function namespace/initialise
+            runFunction(namespace, "initialise", level.server, level = level)
         }
-        override fun start() {
+        override fun start(level: ServerLevel) {
             // run function namespace/start
+            runFunction(namespace, "start", level.server, level = level)
         }
-        override fun end() {
+        override fun end(level: ServerLevel) {
             // run function namespace/end
+            runFunction(namespace, "end", level.server, level = level)
         }
-        override fun terminate() {
+        override fun terminate(level: ServerLevel) {
             // run function namespace/terminate
+            runFunction(namespace, "terminate", level.server, level = level)
         }
     }
     
-    abstract fun init()
-    abstract fun start()
-    abstract fun end()
-    abstract fun terminate()
+    abstract fun init(level: ServerLevel)
+    abstract fun start(level: ServerLevel)
+    abstract fun end(level: ServerLevel)
+    abstract fun terminate(level: ServerLevel)
 
     override fun getSerializedName(): String = namespace
 }
@@ -91,6 +99,7 @@ interface GameStateExposer {
 }
 
 internal interface GameDataHolder : GameStateExposer {
+    val tiedLevel: ServerLevel
     override var phase: GamePhase
     override var pointMultiplier: Int
     override var activeCard: Wildcard?
@@ -102,16 +111,16 @@ internal interface GameDataHolder : GameStateExposer {
     
     override fun startGame() {
         phase = GamePhase.Active
-        activeCard?.start()
+        activeCard?.start(tiedLevel)
     }
     
     override fun endGame() {
         phase = GamePhase.PostGame
-        activeCard?.end()
+        activeCard?.end(tiedLevel)
     }
 
     override fun terminate() {
-        activeCard?.terminate()
+        activeCard?.terminate(tiedLevel)
         activeCard = null
         phase = GamePhase.Inactive
     }

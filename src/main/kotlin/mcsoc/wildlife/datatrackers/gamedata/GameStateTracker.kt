@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import mcsoc.wildlife.datatrackers.LevelDataType
 import mcsoc.wildlife.datatrackers.LevelTiedData
+import net.minecraft.server.level.ServerLevel
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
@@ -23,7 +24,12 @@ class GameStateTracker() : LevelTiedData(), GameDataHolder {
         pointMultiplier = multiplier
         this.activeCard = activeCard.getOrNull()
     }
-    
+
+    override fun setTiedLevel(level: ServerLevel) {
+        super.setTiedLevel(level)
+        this.tiedLevel = level
+    }
+    override lateinit var tiedLevel: ServerLevel
     override var phase: GamePhase = GamePhase.Inactive
     override var pointMultiplier = 1
     override var activeCard: Wildcard? = null
