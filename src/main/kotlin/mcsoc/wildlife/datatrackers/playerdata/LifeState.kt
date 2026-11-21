@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.ChatFormatting
 
-sealed class LifeState(val id: Byte, val next: LifeState?, val prev: LifeState?, colour: ChatFormatting) {
+sealed class LifeState(val id: Byte, val next: LifeState?, val prev: LifeState?, val colour: ChatFormatting) {
     companion object {
         fun fromId(id: Byte): LifeState {
             return when (id.toInt()) {

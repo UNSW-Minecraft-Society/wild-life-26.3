@@ -3,7 +3,9 @@
 	"package": "mcsoc.wildlife.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"EntityNameTagMixin",
+		"PlayerNameTagColourMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
