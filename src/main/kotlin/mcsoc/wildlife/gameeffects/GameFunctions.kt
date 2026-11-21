@@ -14,7 +14,7 @@ import kotlin.time.Duration.Companion.seconds
  * 1 means card not found
  */
 fun ServerLevel.startCountdown(cardId: String): Int {
-    if (level.gameState.phase.isRunning) endActiveCard()
+    if (level.gameState.phase.isRunning) endCurrentRound()
     val card = Wildcard.fromNamespace(cardId) ?: return 1
     
     this.getActivePlayers().forEach { it.onStartCount() }
@@ -26,19 +26,14 @@ fun ServerLevel.startCountdown(cardId: String): Int {
 
 fun ServerLevel.startActiveCard() {
     this.getActivePlayers().forEach { it.onStartGame() }
-    
     this.gameState.startGame()
 }
 
-fun ServerLevel.endActiveCard() {
-    // call interface/end
-    
+fun ServerLevel.endCurrentRound() {    
 
     this.gameState.endGame()
     this.getActivePlayers().forEach { it.onFinish() }
-        
-    // call interface/terminate
-
+    this.gameState.terminate()
 }
 
 fun ServerLevel.tickGame() {
