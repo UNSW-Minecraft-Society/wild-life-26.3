@@ -7,4 +7,5 @@ fun registerEvents() {
     registerCommands()
     registerTickEvents()
     registerPlayerConnectionEvents()
+    registerPlayerDeathEvent()
 }
