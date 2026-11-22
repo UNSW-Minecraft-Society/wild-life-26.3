@@ -66,7 +66,7 @@ fun ServerLevel.tickGame() {
     if (this.gameState.phase.isActive) {
         this.getActivePlayers().forEach { it.tickPlayer() }
         // per second
-        for (i in 0u..this.gameClock.timerSecond) {
+        for (i in 0u..<this.gameClock.timerSecond) {
             this.playerData.activePlayerData
                 .filter{ it.lifestate == LifeState.Green }
                 .forEach{ 
